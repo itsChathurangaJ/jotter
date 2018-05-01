@@ -1,0 +1,30 @@
+{{#each idea}}
+
+<div class="card mb-2">
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <h5 class="card-title">{{title}}</h5>
+                    <p class="card-text">{{details}}</p>
+                </div>
+                <div class="col-sm ">
+
+                    <form method="POST" action="/ideas/{{id}}?_method=DELETE">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" class="btn btn-danger float-right" value="Delete">
+                    </form>
+
+                    <a href="/ideas/edit/{{id}}">
+                        <button class="btn btn-dark float-right mr-1">
+                            Edit
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ {{else}}
+<p>No ideas listed</p>
+{{/each}} 
