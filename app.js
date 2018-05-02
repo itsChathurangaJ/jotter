@@ -55,6 +55,7 @@ app.use(methodOverride('_method'));
 //Load Routes
 const index = require('./routes/index');
 const ideas = require('./routes/ideas');
+const users = require('./routes/users');
 
 //Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -62,6 +63,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //User routes
 app.use('/',index);
 app.use('/ideas',ideas);
+app.use('/users',users);
 
 //Set Port
 const port = 5000;
