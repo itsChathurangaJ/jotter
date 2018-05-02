@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col offset-s3 s6 ">
+        <div class="card ">
+            <div class="card-content">
+                <div class="card-title">
+                    <h3>Register</h3>
+                </div>
+                <form action="/users" method="POST">
+                    <!--Name-->
+                    <div class="input-field">
+                        <input name="name" type="text" required>
+                        <label for="name">Name</label>
+                    </div>
+                    <!--Email-->
+                    <div class="input-field">
+                        <input name="email" type="email" required>
+                        <label for="email">Email</label>
+                    </div>
+                    <!-- Password -->
+                    <div class="input-field">
+                        <input name="password" type="password" required>
+                        <label for="password">Password</label>
+                    </div>
+                    <!-- Confirm Password -->
+                    <div class="input-field">
+                        <input name="confirmpassword" type="password" required>
+                        <label for="confirmpassword">Confirm Password</label>
+                    </div>
+                    <!--Submit Button-->
+                    <button class="btn waves-effect waves-light" type="submit">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
