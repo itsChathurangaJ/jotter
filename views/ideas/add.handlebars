@@ -1,19 +1,32 @@
 {{#each errors}}
-    <div class="alert alert-danger">{{text}}</div>
-    {{else}}
-{{/each}}
+<div class="alert alert-danger">{{text}}</div>
+{{else}} {{/each}}
 
-<div class="card card-body">
-    <h3>Ideas</h3>
-    <form action="/ideas" method="POST">
-        <div class="form-group">
-            <label for="title">Title</label>
-            <input type="text" name="title" class="form-control" required>
+<div class="row">
+    <div class="col offset-s3 s6 ">
+        <div class="card ">
+
+            <div class="card-content">
+                <div class="card-title">
+                    <h3>Add Idea</h3>
+                </div>
+                <form action="/ideas" method="POST">
+                    <!--Title-->
+                    <div class="input-field">
+                        <input name="title" type="text" required>
+                        <label for="title">Title</label>
+                    </div>
+                    <!-- Details -->
+                    <div class="input-field ">
+                        <textarea name="details" class="materialize-textarea" required></textarea>
+                        <label for="details">Details</label>
+                    </div>
+                    <!--Submit Button-->
+                    <button class="btn waves-effect waves-light" type="submit">
+                        Submit
+                    </button>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="details">Details</label>
-            <textarea name="details" class="form-control" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
 </div>

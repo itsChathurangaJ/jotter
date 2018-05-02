@@ -21,10 +21,6 @@ mongoose.connect('mongodb://localhost/jotter')
 require('./models/Idea');
 const Idea = mongoose.model('idea')
 
-
-//Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
-
 //express-handlebars Middleware
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -34,108 +30,18 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
 //method-override Middleware
-app.use(methodOverride('_method'))
+app.use(methodOverride('_method'));
 
-//Index Route
-app.get('/', (req, res) => {
-    res.render('index')
-});
+//Load Routes
+const index = require('./routes/index');
+const ideas = require('./routes/ideas');
 
-//About Route
-app.get('/about', (req, res) => {
-    res.render('about')
-});
+//Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-//Idea Index Route
-app.get('/ideas',(req,res)=>{
-    Idea.find({})
-        .sort({date:'desc'})
-        .then(idea=>{
-            res.render('ideas/index',{
-                idea:idea
-            })
-        })   
-})
-
-//Add Ideas route
-app.get('/ideas/add', (req, res) => {
-    res.render('ideas/add')
-});
-
-//Edit Ideas route
-app.get('/ideas/edit/:id', (req, res) => {
-    Idea.findOne({
-        _id:req.params.id
-    })
-    .then(idea=>{
-        res.render('ideas/edit',{
-            idea:idea
-        })
-    })
-    
-});
-
-//Process add Ideas form
-app.post('/ideas', (req, res) => {
-    // console.log(req.body)
-    let errors = [];
-
-    if (!req.body.title) {
-        errors.push({ text: 'Title not added!' });
-    }
-    if (!req.body.details) {
-        errors.push({ text: 'Details not added!' })
-    }
-
-    if (errors.length > 0) {
-        res.render('ideas/add', {
-            errors: errors,
-            title: req.body.title,
-            details: req.body.details
-        });
-
-    } else {
-        const newUser = {
-            title: req.body.title,
-            details: req.body.details
-        }
-        new Idea(newUser) 
-            .save()
-            .then(idea => res.redirect('/ideas'));
-    }
-});
-
-
-
-//Process Edit Ideas form
-app.put('/ideas/:id',(req,res)=>{
-    Idea.findOne({
-        _id:req.params.id
-    })
-    .then(idea=>{
-        //new values
-        idea.title=req.body.title,
-        idea.details=req.body.details
-
-        idea.save()
-            .then(idea=>{
-                res.redirect('/ideas')
-            })
-    })
-    
-})
-//Delete Idea
-app.delete('/ideas/:id',(req,res)=>{
-    Idea.remove({_id:req.params.id})
-        .then(()=>{
-            res.redirect('/ideas')
-        });
-});
-
-
-
-
-
+//User routes
+app.use('/',index);
+app.use('/ideas',ideas);
 
 //Set Port
 const port = 5000;
