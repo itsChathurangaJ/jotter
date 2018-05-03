@@ -14,9 +14,11 @@ const app = express();
 //Map global promise
 mongoose.Promise = global.Promise;
 
+//DB Config
+const db = require('./config/database')
 
 //Connect to mongoose
-mongoose.connect('mongodb://localhost/jotter')
+mongoose.connect(db.mongoURI)
     .then(() => console.log(`Mongo DB Connected`))
     .catch(err => console.log(err));
 
@@ -73,7 +75,7 @@ app.use('/users',users);
 require('./config/passport')(passport);
 
 //Set Port
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 //Listen
 app.listen(port, () => {
