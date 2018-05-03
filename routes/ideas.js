@@ -1,11 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const mongoose =require('mongoose');
+
+//Ensure Authenticated helper
+const {ensureAuthenticated} = require('../helpers/auth')
+
+//Load Idea Model
+require('../models/Idea');
 const Idea = mongoose.model('idea');
 
 //Idea Index Route
-router.get('/', (req, res) => {
-    Idea.find({})
+router.get('/',ensureAuthenticated, (req, res) => {
+    Idea.find({user:req.user.id})
         .sort({ date: 'desc' })
         .then(idea => {
             res.render('ideas/index', {
@@ -15,12 +21,12 @@ router.get('/', (req, res) => {
 })
 
 //Add Ideas route
-router.get('/add', (req, res) => {
+router.get('/add',ensureAuthenticated, (req, res) => {
     res.render('ideas/add')
 });
 
 //Edit Ideas route
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id',ensureAuthenticated, (req, res) => {
     Idea.findOne({
         _id: req.params.id
     })
@@ -33,7 +39,7 @@ router.get('/edit/:id', (req, res) => {
 });
 
 //Process add Ideas form
-router.post('/', (req, res) => {
+router.post('/',ensureAuthenticated, (req, res) => {
     // console.log(req.body)
     let errors = [];
 
@@ -52,11 +58,12 @@ router.post('/', (req, res) => {
         });
 
     } else {
-        const newUser = {
+        const newIdea = {
             title: req.body.title,
-            details: req.body.details
+            details: req.body.details,
+            user:req.user.id
         }
-        new Idea(newUser)
+        new Idea(newIdea)
             .save()
             .then(idea => {
                 req.flash('success_msg','Added!');
@@ -68,7 +75,7 @@ router.post('/', (req, res) => {
 
 
 //Process Edit Ideas form
-router.put('/:id', (req, res) => {
+router.put('/:id',ensureAuthenticated, (req, res) => {
     Idea.findOne({
         _id: req.params.id
     })
@@ -86,7 +93,7 @@ router.put('/:id', (req, res) => {
 
 })
 //Delete Idea
-router.delete('/:id', (req, res) => {
+router.delete('/:id',ensureAuthenticated, (req, res) => {
     Idea.remove({ _id: req.params.id })
         .then(() => {
             req.flash('success_msg','Removed!');

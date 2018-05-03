@@ -6,6 +6,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport')
 
 //Inititalize 
 const app = express();
@@ -19,9 +20,7 @@ mongoose.connect('mongodb://localhost/jotter')
     .then(() => console.log(`Mongo DB Connected`))
     .catch(err => console.log(err));
 
-//Load Idea Model
-require('./models/Idea');
-const Idea = mongoose.model('idea')
+
 
 //express-handlebars Middleware
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
@@ -38,6 +37,10 @@ app.use(session({
     saveUninitialized: true
   }));
 
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 //connect-flash Middleware
 app.use(flash());
 
@@ -46,6 +49,7 @@ app.use((req,res,next)=>{
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
+    res.locals.user = req.user||null;
     next();
 })
 
@@ -60,10 +64,13 @@ const users = require('./routes/users');
 //Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-//User routes
+//Use routes
 app.use('/',index);
 app.use('/ideas',ideas);
 app.use('/users',users);
+
+//Passport Config
+require('./config/passport')(passport);
 
 //Set Port
 const port = 5000;

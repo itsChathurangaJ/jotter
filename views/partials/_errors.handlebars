@@ -12,3 +12,18 @@
     </div>
 {{else}}
 {{/each}}
+
+<!--Check for passport errors-->
+{{#if error}}
+<div class="row ">
+        <div class="col offset-s2 s8 center ">
+            <div class="card red">
+                <div class="card-content">
+                    <span class="card-title white-text">
+                        <h5>{{error}}</h5>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/if}}
