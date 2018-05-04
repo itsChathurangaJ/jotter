@@ -1,5 +1,5 @@
 <header>
-    <nav class="grey darken-4">
+    <nav class="grey darken-4 hide-on-med-and-down">
         <div class="container">
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo center">Jotter</a>
@@ -30,5 +30,55 @@
                 </ul>
             </div>
         </div>
-    </nav>   
+    </nav>
 </header>
+
+<!--Mobile Menu -->
+
+<div class="grey darken-4 hide-on-large-only">
+    <div class="container">
+        <div class="row">
+            <div class="col s4 offset-s4">
+                <h5 class="center-align">
+                    <a href="/" class="center-align white-text">Jotter</a>
+                </h5>
+            </div>
+            <div class="col s4 right-align">
+                <a href="#" data-target="slide-out" class=" sidenav-trigger">
+                    <i class="fa fa-bars fa-2x white-text "></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ul id="slide-out" class="sidenav white-text">
+    <li>
+        <a href="/">Home</a>
+    </li>
+    <li>
+        <a href="/about">About</a>
+    </li>
+
+    <li>
+        <div class="divider"></div>
+    </li>
+    
+    {{#if user}}
+    <li>
+        <a href="/ideas">Ideas</a>
+    </li>
+    <li>
+        <a href="/users/logout">Logout</a>
+    </li>
+    {{else}}
+    <li>
+        <a href="/users/login">Login</a>
+    </li>
+    <li>
+        <a href="/users/register">Register</a>
+    </li>
+    {{/if}}
+
+</ul>
